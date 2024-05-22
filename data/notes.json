@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Important Meeting Notes",
+    "description": "Meeting with the team on [DATE]. Discussed project progress, deadlines, and next steps. Key takeaways: [list of key points]",
+    "userId": 1
+  },
+  {
+    "title": "Grocery List",
+    "description": "* Milk\n* Bread\n* Eggs\n* Fruits and vegetables",
+    "userId": 1
+  },
+  {
+    "title": "Project Ideas",
+    "description": "Brainstorming new project ideas. Some potential options include: [list of ideas]",
+    "userId": 1
+  },
+  {
+    "title": "Weekend Plans",
+    "description": "Planning activities for the upcoming weekend. Considering [list of options]",
+    "userId": 2
+  },
+  {
+    "title": "Movie Recommendations",
+    "description": "A list of movies to watch: [list of movie titles]",
+    "userId": 2
+  },
+  {
+    "title": "Book Wishlist",
+    "description": "Books I'd like to read in the near future: [list of book titles]",
+    "userId": 2
+  }
+]
