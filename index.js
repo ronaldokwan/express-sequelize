@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-const port = 3000;
 
 const HomeController = require("./controllers/homeController");
 const AuthController = require("./controllers/authController");
@@ -36,7 +35,4 @@ app.delete("/delete-note/:id", authorization, NoteController.deleteNote);
 
 app.use(errHandler);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-  console.log(`http://localhost:${port}`);
-});
+module.exports = app;

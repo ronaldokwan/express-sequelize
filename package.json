@@ -1,11 +1,12 @@
 {
-  "name": "express-sequelize",
+  "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "test": "npx jest --runInBand --forceExit --detectOpenHandles --verbose"
+    "start": "nodemon server.js",
+    "test": "npx jest --runInBand --forceExit --detectOpenHandles --verbose",
+    "coverage": "npx jest --coverage --runInBand --forceExit --detectOpenHandles --verbose"
   },
   "keywords": [],
   "author": "",
