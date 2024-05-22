@@ -1,0 +1,2390 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Server (Express, Sequelize)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+    margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-uiBlue { background-color: rgba(35, 131, 226, .07); }
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-transparentGray { background-color: rgba(227, 226, 224, 0); }
+.select-value-color-translucentGray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+.select-value-color-pageGlass { background-color: undefined; }
+.select-value-color-washGlass { background-color: undefined; }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="872e6a88-83b0-4ba5-b97e-1d9b7717a49c" class="page sans"><header><h1 class="page-title">Server (Express, Sequelize)</h1><p class="page-description"></p></header><div class="page-body"><h1 id="7c8df2bb-81f1-43fd-a634-2099fe510973" class="block-color-teal">Prerequisites</h1><ul id="d5536922-513a-4491-8694-46139b467f0f" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Node JS</li></ul><ul id="fb608ead-ded9-4865-bb21-e73e7e0105d4" class="block-color-blue bulleted-list"><li style="list-style-type:disc"> PostgreSQL<ul id="ed21edd1-0cba-46e2-b82e-c05ecd969dc0" class="bulleted-list"><li style="list-style-type:circle">username</li></ul><ul id="52d1e42d-8566-4036-8bfa-bfdd029525f1" class="bulleted-list"><li style="list-style-type:circle">password</li></ul></li></ul><h1 id="91f9e257-ade9-4a5e-8a4d-7fef01972ee5" class="block-color-teal">Setup</h1><ul id="09f9a402-f3b1-47f8-ad5c-0065c200202a" class="block-color-blue bulleted-list"><li style="list-style-type:disc">CLI<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="fc062ff8-f630-4158-bdfa-a7cb947517e1" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">mkdir express-sequelize &amp;&amp; cd $_ &amp;&amp; touch {index.js,sequelize.txt};
+
+npm init -y &amp;&amp; git init;
+npm install pg express sequelize &amp;&amp; npm install sequelize-cli nodemon --save-dev &amp;&amp; echo &quot;node_modules&quot; &gt; .gitignore;
+npx sequelize-cli init;
+
+npm install bcrypt jsonwebtoken dotenv;
+npm install jest supertest --save-dev;</code></pre></li></ul><ul id="c8dc6be8-921c-4fe1-bb40-22f5d015315a" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Git (initial)<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="ac016623-c967-492a-a5e5-da1ffb6cb451" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">git add . &amp;&amp; git commit -am &quot;initial&quot;</code></pre></li></ul><h1 id="b3e3931b-67ca-4623-9681-c02a58f8535d" class="block-color-teal">Update scripts</h1><ul id="6e30c2c6-5f51-4bf8-a05a-38f6d184face" class="block-color-blue bulleted-list"><li style="list-style-type:disc">package.json scripts<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="7f3a3922-15d8-4a9e-87db-3778119367cb" class="code"><code class="language-Markdown">{
+  &quot;name&quot;: &quot;express-sequelize&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;index.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;nodemon index.js&quot;,
+    &quot;test&quot;: &quot;npx jest --runInBand --forceExit --detectOpenHandles --verbose&quot;
+  },
+  &quot;keywords&quot;: [],
+  &quot;author&quot;: &quot;&quot;,
+  &quot;license&quot;: &quot;ISC&quot;,
+  &quot;dependencies&quot;: {
+    &quot;bcrypt&quot;: &quot;^5.1.1&quot;,
+    &quot;dotenv&quot;: &quot;^16.4.5&quot;,
+    &quot;express&quot;: &quot;^4.19.2&quot;,
+    &quot;jsonwebtoken&quot;: &quot;^9.0.2&quot;,
+    &quot;pg&quot;: &quot;^8.11.5&quot;,
+    &quot;sequelize&quot;: &quot;^6.37.3&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;jest&quot;: &quot;^29.7.0&quot;,
+    &quot;nodemon&quot;: &quot;^3.1.0&quot;,
+    &quot;sequelize-cli&quot;: &quot;^6.6.2&quot;,
+    &quot;supertest&quot;: &quot;^7.0.0&quot;
+  }
+}
+</code></pre></li></ul><h1 id="c0248d41-1ccf-4e40-b0e0-48c6980aec0f" class="block-color-teal">Create Database</h1><ul id="01d3d7dc-db46-43a1-9ba0-f9d2708cbe67" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Change the config<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="8d451902-8d17-46be-87e2-c4d8ea80da23" class="code"><code class="language-Markdown">{
+  &quot;development&quot;: {
+    &quot;username&quot;: &quot;postgres&quot;,
+    &quot;password&quot;: &quot;postgres&quot;,
+    &quot;database&quot;: &quot;notes_sequelize_express&quot;,
+    &quot;host&quot;: &quot;127.0.0.1&quot;,
+    &quot;dialect&quot;: &quot;postgres&quot;
+  },
+  &quot;test&quot;: {
+    &quot;username&quot;: &quot;postgres&quot;,
+    &quot;password&quot;: &quot;postgres&quot;,
+    &quot;database&quot;: &quot;notes_sequelize_express_test&quot;,
+    &quot;host&quot;: &quot;127.0.0.1&quot;,
+    &quot;dialect&quot;: &quot;postgres&quot;
+  },
+  &quot;production&quot;: {
+    &quot;username&quot;: &quot;root&quot;,
+    &quot;password&quot;: null,
+    &quot;database&quot;: &quot;database_production&quot;,
+    &quot;host&quot;: &quot;127.0.0.1&quot;,
+    &quot;dialect&quot;: &quot;mysql&quot;
+  }
+}</code></pre></li></ul><ul id="0bed2f78-fa3e-426b-824d-a1e7d92bf754" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Create database<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="54514ce5-d4ce-4b9c-81a3-6a1ff1e8fdf8" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">npx sequelize-cli db:create</code></pre></li></ul><h1 id="5f944d53-e6c9-450c-9bc1-6e148fd7d282" class="block-color-teal">Migrations, Models, Seeders</h1><ul id="9e1ec466-c8be-4bc5-a488-5e2224b99ea3" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Create model (add the command to sequelize.txt)<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2a6c4ef8-2a9e-43eb-8c9e-1c346e8d979a" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># order matter (generate the one without the Foreign Key first) 
+npx sequelize-cli model:generate --name User --attributes name:string,age:integer,email:string,password:string
+npx sequelize-cli model:generate --name Note --attributes title:string,description:string,userId:integer</code></pre></li></ul><ul id="6a9b5b1d-ebc4-42b9-ba5a-caf7d9a0cfc5" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Migrations (validation)<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="38d6e91e-933f-47c2-a109-66266c11e5b9" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># create-user.js
+&quot;use strict&quot;;
+
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable(&quot;Users&quot;, {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      name: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      age: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      email: {
+        allowNull: false,
+        unique: true,
+        type: Sequelize.STRING,
+      },
+      password: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    });
+  },
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable(&quot;Users&quot;);
+  },
+};
+
+# create-note.js (references)
+&quot;use strict&quot;;
+
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable(&quot;Notes&quot;, {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+      },
+      title: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      description: {
+        type: Sequelize.STRING,
+      },
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: &quot;Users&quot;,
+          key: &quot;id&quot;,
+        },
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    });
+  },
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable(&quot;Notes&quot;);
+  },
+};
+</code></pre></li></ul><ul id="2e379f9d-566a-46aa-aef8-0c9b3e1c8608" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Models<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="6e5e3c0f-0e3d-4bc8-b5b7-5474a81593d8" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># note.js
+&quot;use strict&quot;;
+const { Model } = require(&quot;sequelize&quot;);
+
+module.exports = (sequelize, DataTypes) =&gt; {
+  class Note extends Model {
+    static associate(models) {
+      Note.belongsTo(models.User, {
+        foreignKey: &quot;userId&quot;,
+      });
+    }
+  }
+  Note.init(
+    {
+      title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: &quot;Title cannot be null&quot; },
+          notEmpty: { msg: &quot;Title cannot be empty&quot; },
+        },
+      },
+      description: DataTypes.STRING,
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: { msg: &quot;UserId cannot be null&quot; },
+          notEmpty: { msg: &quot;UserId cannot be empty&quot; },
+        },
+        references: {
+          model: &quot;Users&quot;,
+          key: &quot;id&quot;,
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: &quot;Note&quot;,
+    }
+  );
+  return Note;
+};
+
+# user.js
+&quot;use strict&quot;;
+const { hashPassword } = require(&quot;../helpers/bcrypt&quot;);
+const { Model } = require(&quot;sequelize&quot;);
+
+module.exports = (sequelize, DataTypes) =&gt; {
+  class User extends Model {
+    static associate(models) {
+      User.hasMany(models.Note, {
+        foreignKey: &quot;userId&quot;,
+      });
+    }
+  }
+  User.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: { msg: &quot;Name cannot be null&quot; },
+          notEmpty: { msg: &quot;Name cannot be empty&quot; },
+        },
+      },
+      age: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notNull: { msg: &quot;Age cannot be null&quot; },
+          notEmpty: { msg: &quot;Age cannot be empty&quot; },
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+        validate: {
+          isEmail: { msg: &quot;Email format is not correct&quot; },
+          notNull: { msg: &quot;Email cannot be null&quot; },
+          notEmpty: { msg: &quot;Email cannot be empty&quot; },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          len: {
+            args: [6],
+            msg: &quot;Password at least 6 characters&quot;,
+          },
+          notNull: { msg: &quot;Password cannot be null&quot; },
+          notEmpty: { msg: &quot;Password cannot be empty&quot; },
+        },
+      },
+    },
+    {
+      sequelize,
+      modelName: &quot;User&quot;,
+    }
+  );
+  User.beforeCreate((user) =&gt; {
+    user.password = hashPassword(user.password);
+  });
+  return User;
+};</code></pre></li></ul><ul id="f33de66b-1ad7-4578-8974-8c54eb112ff7" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Models (migrate the one without the Foreign Key first)<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="a4b9078b-e730-4b95-8bf2-4e84776effee" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">npx sequelize-cli db:migrate</code></pre></li></ul><ul id="118ea868-f8a0-4e9a-bdb1-29e79434fe15" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Seeders (add the command to sequelize.txt)<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="771ad3ce-2c59-4a7c-84bb-b3a3c58618f8" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">npx sequelize-cli seed:generate --name user
+npx sequelize-cli seed:generate --name note</code></pre></li></ul><ul id="05834c5b-2a1a-47b0-aeb1-62db2aef1e99" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Seeders <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="bf114fd0-854b-4dcd-935f-339dbc514a91" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># user.js
+&quot;use strict&quot;;
+const { hashPassword } = require(&quot;../helpers/bcrypt&quot;);
+
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    const data = require(&quot;../data/users.json&quot;);
+    data.forEach((element) =&gt; {
+      element.createdAt = new Date();
+      element.updatedAt = new Date();
+      element.password = hashPassword(element.password);
+    });
+    await queryInterface.bulkInsert(&quot;Users&quot;, data);
+  },
+
+  async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete(&quot;Users&quot;, null, {});
+  },
+};
+
+# note.js
+&quot;use strict&quot;;
+
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    const data = require(&quot;../data/notes.json&quot;);
+    data.forEach((element) =&gt; {
+      element.createdAt = new Date();
+      element.updatedAt = new Date();
+    });
+    await queryInterface.bulkInsert(&quot;Notes&quot;, data);
+  },
+
+  async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete(&quot;Notes&quot;, null, {});
+  },
+};</code></pre></li></ul><ul id="eb851d5a-abde-44f3-ad4d-a94d09bf77d7" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Data<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="978065ea-e493-48f3-8e7b-11929270bbd7" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">mkdir data &amp;&amp; cd $_ &amp;&amp; touch {users,notes}.json &amp;&amp; cd ..
+
+# users.json
+[
+  {
+    &quot;name&quot;: &quot;user1&quot;,
+    &quot;age&quot;: 20,
+    &quot;email&quot;: &quot;user1@example.com&quot;,
+    &quot;password&quot;: &quot;123456&quot;
+  },
+  {
+    &quot;name&quot;: &quot;user2&quot;,
+    &quot;age&quot;: 25,
+    &quot;email&quot;: &quot;user2@example.com&quot;,
+    &quot;password&quot;: &quot;qwerty&quot;
+  }
+]
+
+# notes.json 
+[
+  {
+    &quot;title&quot;: &quot;Important Meeting Notes&quot;,
+    &quot;description&quot;: &quot;Meeting with the team on [DATE]. Discussed project progress, deadlines, and next steps. Key takeaways: [list of key points]&quot;,
+    &quot;userId&quot;: 1
+  },
+  {
+    &quot;title&quot;: &quot;Grocery List&quot;,
+    &quot;description&quot;: &quot;* Milk\n* Bread\n* Eggs\n* Fruits and vegetables&quot;,
+    &quot;userId&quot;: 1
+  },
+  {
+    &quot;title&quot;: &quot;Project Ideas&quot;,
+    &quot;description&quot;: &quot;Brainstorming new project ideas. Some potential options include: [list of ideas]&quot;,
+    &quot;userId&quot;: 1
+  },
+  {
+    &quot;title&quot;: &quot;Weekend Plans&quot;,
+    &quot;description&quot;: &quot;Planning activities for the upcoming weekend. Considering [list of options]&quot;,
+    &quot;userId&quot;: 2
+  },
+  {
+    &quot;title&quot;: &quot;Movie Recommendations&quot;,
+    &quot;description&quot;: &quot;A list of movies to watch: [list of movie titles]&quot;,
+    &quot;userId&quot;: 2
+  },
+  {
+    &quot;title&quot;: &quot;Book Wishlist&quot;,
+    &quot;description&quot;: &quot;Books I&#x27;d like to read in the near future: [list of book titles]&quot;,
+    &quot;userId&quot;: 2
+  }
+]</code></pre></li></ul><ul id="3cc9ca07-c5fb-4ff4-b9c1-89d3dadcd96b" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Helpers <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="4e7cc0ec-b12e-44c6-b64b-77b1a33255f6" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">mkdir helpers &amp;&amp; cd $_ &amp;&amp; touch {bcrypt,jwt}.js &amp;&amp; cd ..
+
+# bcrypt.js
+const bcrypt = require(&quot;bcrypt&quot;);
+
+function hashPassword(pass) {
+  return bcrypt.hashSync(pass, bcrypt.genSaltSync(5));
+}
+function comparePassword(pass, hashedPass) {
+  return bcrypt.compareSync(pass, hashedPass);
+}
+
+module.exports = { hashPassword, comparePassword };
+
+# jwt.js
+const jwt = require(&quot;jsonwebtoken&quot;);
+const secret = process.env.JWT_SECRET;
+
+function signToken(payload) {
+  return jwt.sign(payload, secret);
+}
+function verifyToken(token) {
+  return jwt.verify(token, secret);
+}
+module.exports = { signToken, verifyToken };</code></pre></li></ul><ul id="40f69687-9ab6-438e-a4a8-3dcd502952fd" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Env<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="e2d41f41-8ea1-4534-b551-11d4b91e9925" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">touch .env &amp;&amp; touch .env.example &amp;&amp; echo &quot;node_modules&quot; &gt; .gitignore &amp;&amp; echo &quot;.env&quot; &gt;&gt; .gitignore
+
+# .env
+JWT_SECRET=secret
+
+# .env.example
+JWT_SECRET=string</code></pre></li></ul><ul id="b4c4f24f-2fb5-431c-95db-1cc389f0317f" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Seed<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="8501d110-a3c9-4cea-8d15-29b8a204e7f7" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">npx sequelize-cli db:seed:all</code></pre></li></ul><ul id="5a16faad-ffab-4173-ab18-7ada050f33f7" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Git (done) <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="bca599ac-7570-4c9d-9058-d7480ba9fa53" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">git add . &amp;&amp; git commit -am &quot;migrate, model and seed done&quot;</code></pre></li></ul><h1 id="6e33c973-70c8-4182-b746-cbef39ac9147" class="block-color-teal">Express and Sequelize</h1><ul id="3e83fe2b-f7c6-4889-ac98-13e3724c8607" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Index.js<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="4d7e1686-b0c2-40d5-9b1f-53b50b4563b2" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># index.js
+const express = require(&#x27;express&#x27;)
+const app = express()
+const port = 3000
+
+app.get(&#x27;/&#x27;, (req, res) =&gt; {
+  res.send(&#x27;Hello World!&#x27;)
+})
+
+app.listen(port, () =&gt; {
+  console.log(`Example app listening on port ${port}`)
+})</code></pre></li></ul><ul id="6617f1d7-6091-45aa-90ab-eab38061ed39" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Test server<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="7f59b2da-bd3a-41bb-a2ca-120348a0a38b" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># terminal
+npm run start
+
+# access with local browser
+http://localhost:3000</code></pre></li></ul><ul id="b6c3d6d7-7872-426f-85c5-28dad6434064" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Index.js<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="fb01f3f2-db9b-40af-9001-f0dd9b7a044a" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># index.js
+require(&quot;dotenv&quot;).config();
+const express = require(&quot;express&quot;);
+const app = express();
+const port = 3000;
+
+const HomeController = require(&quot;./controllers/homeController&quot;);
+const AuthController = require(&quot;./controllers/authController&quot;);
+const NoteController = require(&quot;./controllers/noteController&quot;);
+
+const errHandler = require(&quot;./middlewares/errorHandler&quot;);
+const authentication = require(&quot;./middlewares/authentication&quot;);
+const authorization = require(&quot;./middlewares/authorization&quot;);
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+// public
+app.get(&quot;/&quot;, HomeController.home);
+app.post(&quot;/register&quot;, AuthController.register);
+app.post(&quot;/login&quot;, AuthController.login);
+
+// authentication
+app.use(authentication);
+
+app.get(&quot;/note&quot;, NoteController.getNote);
+app.post(&quot;/note&quot;, NoteController.addNote);
+
+// authentication + authorization
+app.patch(
+  &quot;/edit-description/:id&quot;,
+  authorization,
+  NoteController.editDescription
+);
+app.put(&quot;/edit-note/:id&quot;, authorization, NoteController.editNote);
+app.delete(&quot;/delete-note/:id&quot;, authorization, NoteController.deleteNote);
+
+app.use(errHandler);
+
+app.listen(port, () =&gt; {
+  console.log(`Example app listening on port ${port}`);
+  console.log(`http://localhost:${port}`);
+});</code></pre></li></ul><ul id="345396a9-168e-4827-a766-e4600422be62" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Middlewares<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="651e8b5a-b4cf-4e81-9940-4ca919f40f4c" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">mkdir middlewares &amp;&amp; cd $_ &amp;&amp; touch {authentication,authorization,errorHandler}.js &amp;&amp; cd ..
+
+# authentication.js
+const { verifyToken } = require(&quot;../helpers/jwt&quot;);
+const { User } = require(&quot;../models&quot;);
+
+async function authentication(req, res, next) {
+  try {
+    const { authorization } = req.headers;
+    if (!authorization) throw { name: &quot;Invalid token&quot; };
+
+    const [type, access_token] = authorization.split(&quot; &quot;);
+    if (type !== &quot;Bearer&quot;) throw { name: &quot;Invalid token&quot; };
+
+    const verify = verifyToken(access_token);
+    if (!verify) throw { name: &quot;Invalid token&quot; };
+
+    const data = await User.findByPk(verify.id);
+    if (!data) throw { name: &quot;Invalid token&quot; };
+
+    req.user = data;
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = authentication;
+
+# authorization.js
+const { Note } = require(&quot;../models&quot;);
+
+async function authorization(req, res, next) {
+  try {
+    const data = await Note.findByPk(req.params.id);
+    if (!data) throw { name: &quot;Note not found&quot; };
+    if (data.userId !== req.user.id) throw { name: &quot;You&#x27;re not authorized&quot; };
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = authorization;
+
+# errorHandler.js
+async function errHandler(error, req, res, next) {
+  switch (error.name) {
+    case &quot;SequelizeValidationError&quot;:
+    case &quot;SequelizeUniqueConstraintError&quot;:
+      const errors = error.errors[0].message;
+      res.status(400).json({ message: errors });
+      break;
+    case &quot;JsonWebTokenError&quot;:
+    case &quot;Invalid token&quot;:
+      res.status(401).json({ message: &quot;Invalid token&quot; });
+      break;
+    case &quot;Name is required&quot;:
+      res.status(400).json({ message: &quot;Name is required&quot; });
+      break;
+    case &quot;Age is required&quot;:
+      res.status(400).json({ message: &quot;Age is required&quot; });
+      break;
+    case &quot;Email is required&quot;:
+      res.status(400).json({ message: &quot;Email is required&quot; });
+      break;
+    case &quot;Password is required&quot;:
+      res.status(400).json({ message: &quot;Password is required&quot; });
+      break;
+    case &quot;Title is required&quot;:
+      res.status(400).json({ message: &quot;Title is required&quot; });
+      break;
+    case &quot;Invalid email/password&quot;:
+      res.status(401).json({ message: &quot;Invalid email/password&quot; });
+      break;
+    case &quot;Email already exist&quot;:
+      res.status(401).json({ message: &quot;Email already exist&quot; });
+      break;
+    case &quot;You&#x27;re not authorized&quot;:
+      res.status(403).json({ message: &quot;You&#x27;re not authorized&quot; });
+      break;
+    case &quot;Note not found&quot;:
+      res.status(404).json({ message: &quot;Note not found&quot; });
+      break;
+    default:
+      res.status(500).json({ message: &quot;Internal server error&quot; });
+      break;
+  }
+}
+
+module.exports = errHandler;</code></pre></li></ul><ul id="bac8541e-0232-4aa2-a112-19b7d1574cb6" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Controllers<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="d4a8822f-12fc-40fb-b4f6-93a5425cc7e6" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">mkdir controllers &amp;&amp; cd $_ &amp;&amp; touch {auth,home,note}Controller.js &amp;&amp; cd ..
+
+# authController.js
+const { User } = require(&quot;../models&quot;);
+const { comparePassword } = require(&quot;../helpers/bcrypt&quot;);
+const { signToken } = require(&quot;../helpers/jwt&quot;);
+
+class AuthController {
+  static async register(req, res, next) {
+    try {
+      const { name, age, email, password } = req.body;
+      if (!name) throw { name: &quot;Name is required&quot; };
+      if (!age) throw { name: &quot;Age is required&quot; };
+      if (!email) throw { name: &quot;Email is required&quot; };
+      if (!password) throw { name: &quot;Password is required&quot; };
+
+      const findEmail = await User.findOne({
+        where: { email },
+      });
+      if (findEmail) throw { name: &quot;Email already exist&quot; };
+
+      const data = await User.create({
+        name,
+        age,
+        email,
+        password,
+      });
+      res.status(201).json({
+        id: data.id,
+        name: data.name,
+        age: data.age,
+        email: data.email,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async login(req, res, next) {
+    try {
+      const { email, password } = req.body;
+      if (!email) throw { name: &quot;Email is required&quot; };
+      if (!password) throw { name: &quot;Password is required&quot; };
+
+      const data = await User.findOne({ where: { email } });
+      if (!data) throw { name: &quot;Invalid email/password&quot; };
+
+      const checkPassword = comparePassword(password, data.password);
+      if (!checkPassword) throw { name: &quot;Invalid email/password&quot; };
+
+      const payload = { id: data.id };
+      const access_token = signToken(payload);
+
+      res.status(200).json({ access_token });
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+
+module.exports = AuthController;
+
+# homeController.js
+class HomeController {
+  static async home(req, res, next) {
+    try {
+      res.status(200).json({ message: &quot;Home&quot; });
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+
+module.exports = HomeController;
+
+# noteController.js
+const { Note } = require(&quot;../models&quot;);
+
+class NoteController {
+  // authentication
+  static async getNote(req, res, next) {
+    try {
+      const data = await Note.findAll({
+        where: { userId: req.user.id },
+      });
+      if (!data) throw { name: &quot;Note not found&quot; };
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async addNote(req, res, next) {
+    try {
+      const { title, description } = req.body;
+      if (!title) throw { name: &quot;Title is required&quot; };
+
+      const userId = req.user.id;
+      await Note.create({
+        title,
+        description,
+        userId,
+      });
+
+      res.status(201).json({ message: &quot;Note has been added&quot; });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // authentication + authorization
+  static async editDescription(req, res, next) {
+    try {
+      const noteId = req.params.id;
+      const { description } = req.body;
+
+      const note = await Note.findByPk(noteId);
+      if (!note) throw { name: &quot;Note not found&quot; };
+
+      note.description = description;
+      await note.save();
+
+      res.status(200).json({ message: &quot;Note has been updated&quot; });
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async editNote(req, res, next) {
+    try {
+      const noteId = req.params.id;
+      const { title, description } = req.body;
+
+      const note = await Note.findByPk(noteId);
+      if (!note) throw { name: &quot;Note not found&quot; };
+      if (!title) throw { name: &quot;Title is required&quot; };
+
+      note.title = title;
+      note.description = description;
+      await note.save();
+
+      res.status(200).json({ message: &quot;Note has been updated&quot; });
+    } catch (error) {
+      next(error);
+    }
+  }
+  static async deleteNote(req, res, next) {
+    try {
+      const noteId = req.params.id;
+
+      const data = await Note.findByPk(noteId);
+      if (!data) throw { name: &quot;Note not found&quot; };
+      await data.destroy();
+
+      res.status(200).json({ message: &quot;Note has been deleted&quot; });
+    } catch (error) {
+      next(error);
+    }
+  }
+}
+
+module.exports = NoteController;</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="63798e4f-4227-40f2-8829-f5f0d4455b94" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">git add . &amp;&amp; git commit -am &quot;development done&quot;</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="97bd0fcd-b68b-423b-b757-72334bb13c20" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">npm run start</code></pre></li></ul><h1 id="6ee6761a-ff7f-4b2b-8ed5-2b65da1654fe" class="block-color-teal">Test</h1><ul id="fcac495b-8652-4151-be61-b5470e18ef99" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Jest<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="351131f0-1f72-4b7d-8aa0-1ac669a85a11" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">mkdir __test__ &amp;&amp; cd $_ &amp;&amp; touch auth.test.js home.test.js note.test.js &amp;&amp; cd .. &amp;&amp; npx sequelize-cli db:create --env test &amp;&amp; npx sequelize-cli db:migrate --env test &amp;&amp; touch server.js</code></pre></li></ul><ul id="a5bd3825-3e2a-4cce-953c-d2b5051fffdd" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Index.js<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="652ee83e-c363-4f0a-babc-00f8fa5573a1" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># index.js
+require(&quot;dotenv&quot;).config();
+const express = require(&quot;express&quot;);
+const app = express();
+
+const HomeController = require(&quot;./controllers/homeController&quot;);
+const AuthController = require(&quot;./controllers/authController&quot;);
+const NoteController = require(&quot;./controllers/noteController&quot;);
+
+const errHandler = require(&quot;./middlewares/errorHandler&quot;);
+const authentication = require(&quot;./middlewares/authentication&quot;);
+const authorization = require(&quot;./middlewares/authorization&quot;);
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+// public
+app.get(&quot;/&quot;, HomeController.home);
+app.post(&quot;/register&quot;, AuthController.register);
+app.post(&quot;/login&quot;, AuthController.login);
+
+// authentication
+app.use(authentication);
+
+app.get(&quot;/note&quot;, NoteController.getNote);
+app.post(&quot;/note&quot;, NoteController.addNote);
+
+// authentication + authorization
+app.patch(
+  &quot;/edit-description/:id&quot;,
+  authorization,
+  NoteController.editDescription
+);
+app.put(&quot;/edit-note/:id&quot;, authorization, NoteController.editNote);
+app.delete(&quot;/delete-note/:id&quot;, authorization, NoteController.deleteNote);
+
+app.use(errHandler);
+
+module.exports = app;</code></pre></li></ul><ul id="06981d33-a8c1-4ecc-8b1a-aec4c9a72d86" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Package.json<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="6c02ee56-3ae0-467f-bd44-bd9215fd2d97" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># package.json
+{
+  &quot;name&quot;: &quot;server&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;server.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;nodemon server.js&quot;,
+    &quot;test&quot;: &quot;npx jest --runInBand --forceExit --detectOpenHandles --verbose&quot;,
+    &quot;coverage&quot;: &quot;npx jest --coverage --runInBand --forceExit --detectOpenHandles --verbose&quot;
+  },
+  &quot;keywords&quot;: [],
+  &quot;author&quot;: &quot;&quot;,
+  &quot;license&quot;: &quot;ISC&quot;,
+  &quot;dependencies&quot;: {
+    &quot;bcrypt&quot;: &quot;^5.1.1&quot;,
+    &quot;dotenv&quot;: &quot;^16.4.5&quot;,
+    &quot;express&quot;: &quot;^4.19.2&quot;,
+    &quot;jsonwebtoken&quot;: &quot;^9.0.2&quot;,
+    &quot;pg&quot;: &quot;^8.11.5&quot;,
+    &quot;sequelize&quot;: &quot;^6.37.3&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;jest&quot;: &quot;^29.7.0&quot;,
+    &quot;nodemon&quot;: &quot;^3.1.0&quot;,
+    &quot;sequelize-cli&quot;: &quot;^6.6.2&quot;,
+    &quot;supertest&quot;: &quot;^7.0.0&quot;
+  }
+}
+</code></pre><p id="c0a532f4-0783-4a24-9f0c-d0aa044398b6" class="">
+</p></li></ul><ul id="0bd97a27-23e5-4fdc-a5e6-a7bb91f263d3" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Server.js<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="195dce93-26b3-4f30-90b9-89b516a83340" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># server.js
+const app = require(&quot;./index&quot;);
+const port = process.env.PORT || 3000;
+
+app.listen(port, () =&gt; {
+  console.log(`Example app listening on port ${port}`);
+  console.log(`http://localhost:${port}`);
+});</code></pre></li></ul><ul id="be477b36-0abb-44b8-b9c3-ad05bb8032a0" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Test<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="b7262603-a5c4-46a2-896f-a15cd521ceff" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># auth.test.js
+const request = require(&quot;supertest&quot;);
+const app = require(&quot;../index&quot;);
+const { User } = require(&quot;../models&quot;);
+
+describe(&quot;POST /register&quot;, () =&gt; {
+  test(&quot;Success register user&quot;, async () =&gt; {
+    const data = {
+      name: &quot;user1&quot;,
+      age: 20,
+      email: &quot;user1@example.com&quot;,
+      password: &quot;123456&quot;,
+    };
+    const res = await request(app).post(&quot;/register&quot;).send(data);
+    expect(res.status).toBe(201);
+    expect(res.body).toMatchObject({
+      id: expect.any(Number),
+      name: data.name,
+      age: data.age,
+      email: data.email,
+    });
+  });
+
+  test(&quot;Name is empty&quot;, async () =&gt; {
+    const data = {
+      age: 20,
+      email: &quot;user1@example.com&quot;,
+      password: &quot;123456&quot;,
+    };
+    const res = await request(app).post(&quot;/register&quot;).send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Name is required&quot;);
+  });
+
+  test(&quot;Age is empty&quot;, async () =&gt; {
+    const data = {
+      name: &quot;user1&quot;,
+      email: &quot;user1@example.com&quot;,
+      password: &quot;123456&quot;,
+    };
+    const res = await request(app).post(&quot;/register&quot;).send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Age is required&quot;);
+  });
+
+  test(&quot;Email is empty&quot;, async () =&gt; {
+    const data = {
+      name: &quot;user1&quot;,
+      age: 20,
+      password: &quot;123456&quot;,
+    };
+    const res = await request(app).post(&quot;/register&quot;).send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Email is required&quot;);
+  });
+
+  test(&quot;Password is empty&quot;, async () =&gt; {
+    const data = {
+      name: &quot;user1&quot;,
+      age: 20,
+      email: &quot;user1@example.com&quot;,
+    };
+    const res = await request(app).post(&quot;/register&quot;).send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Password is required&quot;);
+  });
+
+  test(&quot;password at least 6 characters&quot;, async () =&gt; {
+    const data = {
+      name: &quot;user2&quot;,
+      age: 20,
+      email: &quot;user2@example.com&quot;,
+      password: &quot;123&quot;,
+    };
+    const res = await request(app).post(&quot;/register&quot;).send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(
+      &quot;message&quot;,
+      &quot;Password at least 6 characters&quot;
+    );
+  });
+
+  test(&quot;Email already exist&quot;, async () =&gt; {
+    const data = {
+      name: &quot;user1&quot;,
+      age: 20,
+      email: &quot;user1@example.com&quot;,
+      password: &quot;123456&quot;,
+    };
+    const res = await request(app).post(&quot;/register&quot;).send(data);
+
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Email already exist&quot;);
+  });
+
+  test(&quot;Not a valid Email&quot;, async () =&gt; {
+    const data = {
+      name: &quot;user1&quot;,
+      age: 20,
+      email: &quot;user1exampleCom&quot;,
+      password: &quot;123456&quot;,
+    };
+    const res = await request(app).post(&quot;/register&quot;).send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Email format is not correct&quot;);
+  });
+});
+
+describe(&quot;POST /login&quot;, () =&gt; {
+  test(&quot;Success login user&quot;, async () =&gt; {
+    const data = {
+      email: &quot;user1@example.com&quot;,
+      password: &quot;123456&quot;,
+    };
+    const res = await request(app).post(&quot;/login&quot;).send(data);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty(&quot;access_token&quot;, expect.any(String));
+  });
+
+  test(&quot;Email is required&quot;, async () =&gt; {
+    const data = {
+      password: &quot;123456&quot;,
+    };
+    const res = await request(app).post(&quot;/login&quot;).send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Email is required&quot;);
+  });
+
+  test(&quot;Password is required&quot;, async () =&gt; {
+    const data = {
+      email: &quot;user1@example.com&quot;,
+    };
+    const res = await request(app).post(&quot;/login&quot;).send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Password is required&quot;);
+  });
+
+  test(&quot;Invalid Email&quot;, async () =&gt; {
+    const data = {
+      email: &quot;user1exampleCom&quot;,
+      password: &quot;123456&quot;,
+    };
+    const res = await request(app).post(&quot;/login&quot;).send(data);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid email/password&quot;);
+  });
+
+  test(&quot;Invalid Password&quot;, async () =&gt; {
+    const data = {
+      email: &quot;user1@example.com&quot;,
+      password: &quot;123&quot;,
+    };
+    const res = await request(app).post(&quot;/login&quot;).send(data);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid email/password&quot;);
+  });
+});
+
+afterAll(async () =&gt; {
+  await User.destroy({ truncate: true, cascade: true, restartIdentity: true });
+});</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="40fa9b56-a653-4065-9f2c-4e774eae0fc7" class="code"><code class="language-Markdown">
+# home.test.js
+const request = require(&quot;supertest&quot;);
+const app = require(&quot;../index&quot;);
+
+describe(&quot;GET /&quot;, () =&gt; {
+  test(&quot;Home&quot;, async () =&gt; {
+    const response = await request(app).get(&quot;/&quot;);
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty(&quot;message&quot;, &quot;Home&quot;);
+  });
+});</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="e57c193f-b1de-44b4-8f11-7f3888de0f90" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all"># note.test.js
+const request = require(&quot;supertest&quot;);
+const app = require(&quot;../index&quot;);
+const { User, Note } = require(&quot;../models&quot;);
+const { signToken } = require(&quot;../helpers/jwt&quot;);
+
+let token1;
+let token2;
+beforeAll(async () =&gt; {
+  let user1 = await User.create({
+    name: &quot;user1&quot;,
+    age: 20,
+    email: &quot;user1@example.com&quot;,
+    password: &quot;123456&quot;,
+  });
+  token1 = signToken({ id: user1.id });
+
+  let user2 = await User.create({
+    name: &quot;user2&quot;,
+    age: 25,
+    email: &quot;user2@example.com&quot;,
+    password: &quot;qwerty&quot;,
+  });
+  token2 = signToken({ id: user2.id });
+});
+
+describe(&quot;POST /note&quot;, () =&gt; {
+  test(&quot;Add new note 1&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Important Meeting Notes&quot;,
+      description:
+        &quot;Meeting with the team on [DATE]. Discussed project progress, deadlines, and next steps. Key takeaways: [list of key points]&quot;,
+    };
+    const res = await request(app)
+      .post(&quot;/note&quot;)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`)
+      .send(data);
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Note has been added&quot;);
+  });
+
+  test(&quot;Add new note 2&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Weekend Plans&quot;,
+      description:
+        &quot;Planning activities for the upcoming weekend. Considering [list of options]&quot;,
+    };
+    const res = await request(app)
+      .post(&quot;/note&quot;)
+      .set(&quot;Authorization&quot;, `Bearer ${token2}`)
+      .send(data);
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Note has been added&quot;);
+  });
+
+  test(&quot;Title is required&quot;, async () =&gt; {
+    const data = {
+      description:
+        &quot;Meeting with the team on [DATE]. Discussed project progress, deadlines, and next steps. Key takeaways: [list of key points]&quot;,
+    };
+    const res = await request(app)
+      .post(&quot;/note&quot;)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`)
+      .send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Title is required&quot;);
+  });
+
+  test(&quot;Invalid token 1&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Important Meeting Notes&quot;,
+      description:
+        &quot;Meeting with the team on [DATE]. Discussed project progress, deadlines, and next steps. Key takeaways: [list of key points]&quot;,
+    };
+    const res = await request(app).post(&quot;/note&quot;).send(data);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+
+  test(&quot;Invalid token 2&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Important Meeting Notes&quot;,
+      description:
+        &quot;Meeting with the team on [DATE]. Discussed project progress, deadlines, and next steps. Key takeaways: [list of key points]&quot;,
+    };
+    const res = await request(app)
+      .post(&quot;/note&quot;)
+      .set(&quot;Authorization&quot;, `Bea asd`)
+      .send(data);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+});
+
+describe(&quot;GET /note&quot;, () =&gt; {
+  test(&quot;Get note&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Important Meeting Notes&quot;,
+      description:
+        &quot;Meeting with the team on [DATE]. Discussed project progress, deadlines, and next steps. Key takeaways: [list of key points]&quot;,
+    };
+    const res = await request(app)
+      .get(&quot;/note&quot;)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject([
+      {
+        id: expect.any(Number),
+        title: data.title,
+        description: data.description,
+        userId: expect.any(Number),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+      },
+    ]);
+  });
+
+  test(&quot;Invalid token 1&quot;, async () =&gt; {
+    const res = await request(app).get(&quot;/note&quot;);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+
+  test(&quot;Invalid token 2&quot;, async () =&gt; {
+    const res = await request(app).get(&quot;/note&quot;).set(&quot;Authorization&quot;, `Bea asd`);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+});
+
+describe(&quot;PATCH /edit-description/:id&quot;, () =&gt; {
+  test(&quot; note&quot;, async () =&gt; {
+    const data = {
+      description: &quot;Patched description&quot;,
+    };
+    const res = await request(app)
+      .patch(`/edit-description/${1}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`)
+      .send(data);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Note has been updated&quot;);
+  });
+
+  test(&quot;Invalid Token 1&quot;, async () =&gt; {
+    const data = {
+      description: &quot;Patched description&quot;,
+    };
+    const res = await request(app).patch(`/edit-description/${1}`).send(data);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+
+  test(&quot;Invalid Token 2&quot;, async () =&gt; {
+    const data = {
+      description: &quot;Patched description&quot;,
+    };
+    const res = await request(app)
+      .patch(`/edit-description/${1}`)
+      .set(&quot;Authorization&quot;, `Bearer asd`)
+      .send(data);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+
+  test(&quot;You&#x27;re not authorized&quot;, async () =&gt; {
+    const data = {
+      description: &quot;Patched description&quot;,
+    };
+    const res = await request(app)
+      .patch(`/edit-description/${2}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`)
+      .send(data);
+    expect(res.status).toBe(403);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;You&#x27;re not authorized&quot;);
+  });
+
+  test(&quot;Note not found&quot;, async () =&gt; {
+    const data = {
+      description: &quot;Patched description&quot;,
+    };
+    const res = await request(app)
+      .put(`/edit-note/${100}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`)
+      .send(data);
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Note not found&quot;);
+  });
+});
+
+describe(&quot;PUT /edit-note/:id&quot;, () =&gt; {
+  test(&quot;Edit note&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Updated title&quot;,
+      description: &quot;Updated description&quot;,
+    };
+    const res = await request(app)
+      .put(`/edit-note/${1}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`)
+      .send(data);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Note has been updated&quot;);
+  });
+
+  test(&quot;Title is required&quot;, async () =&gt; {
+    const data = {
+      description: &quot;Updated description&quot;,
+    };
+    const res = await request(app)
+      .put(`/edit-note/${1}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`)
+      .send(data);
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Title is required&quot;);
+  });
+
+  test(&quot;Invalid Token 1&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Updated title&quot;,
+      description: &quot;Updated description&quot;,
+    };
+    const res = await request(app).put(`/edit-note/${1}`).send(data);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+
+  test(&quot;Invalid Token 2&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Updated title&quot;,
+      description: &quot;Updated description&quot;,
+    };
+    const res = await request(app)
+      .put(`/edit-note/${1}`)
+      .set(&quot;Authorization&quot;, `Bearer asd`)
+      .send(data);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+
+  test(&quot;You&#x27;re not authorized&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Updated title&quot;,
+      description: &quot;Updated description&quot;,
+    };
+    const res = await request(app)
+      .put(`/edit-note/${2}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`)
+      .send(data);
+    expect(res.status).toBe(403);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;You&#x27;re not authorized&quot;);
+  });
+
+  test(&quot;Note not found&quot;, async () =&gt; {
+    const data = {
+      title: &quot;Updated title&quot;,
+      description: &quot;Updated description&quot;,
+    };
+    const res = await request(app)
+      .put(`/edit-note/${100}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`)
+      .send(data);
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Note not found&quot;);
+  });
+});
+
+describe(&quot;DELETE /delete-note/:id&quot;, () =&gt; {
+  test(&quot;Delete note&quot;, async () =&gt; {
+    const res = await request(app)
+      .delete(`/delete-note/${1}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Note has been deleted&quot;);
+  });
+
+  test(&quot;Invalid Token 1&quot;, async () =&gt; {
+    const res = await request(app).delete(`/delete-note/${2}`);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+
+  test(&quot;Invalid Token 2&quot;, async () =&gt; {
+    const res = await request(app)
+      .delete(`/delete-note/${2}`)
+      .set(&quot;Authorization&quot;, `bea asd`);
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Invalid token&quot;);
+  });
+
+  test(&quot;You&#x27;re not authorized&quot;, async () =&gt; {
+    const res = await request(app)
+      .delete(`/delete-note/${2}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`);
+    expect(res.status).toBe(403);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;You&#x27;re not authorized&quot;);
+  });
+
+  test(&quot;Note not found&quot;, async () =&gt; {
+    const res = await request(app)
+      .delete(`/delete-note/${100}`)
+      .set(&quot;Authorization&quot;, `Bearer ${token1}`);
+    expect(res.status).toBe(404);
+    expect(res.body).toHaveProperty(&quot;message&quot;, &quot;Note not found&quot;);
+  });
+});
+
+afterAll(async () =&gt; {
+  await User.destroy({ truncate: true, cascade: true, restartIdentity: true });
+  await Note.destroy({ truncate: true, cascade: true, restartIdentity: true });
+});</code></pre></li></ul><ul id="ea1c5506-2623-4466-81ad-b828f9acf1cb" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Test result<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="a1b585f4-2d3c-407a-abcb-bcbb006d3cba" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">npm run test</code></pre></li></ul><ul id="1baf2142-1d33-466f-b24f-a82bcfa3bde6" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Test coverage<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="049c910f-13f2-4776-8f02-beaf939473d3" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">npm run coverage</code></pre></li></ul><ul id="5afc4807-a94c-4609-96a4-61d12ed5d249" class="block-color-blue bulleted-list"><li style="list-style-type:disc">Git (done)<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="03c3e92d-ffa6-4937-adc6-5ec4eadc9a2f" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">git add . &amp;&amp; git commit -am &quot;done&quot;</code></pre></li></ul><h1 id="68d7bc45-ad41-4ba2-943a-8dab2b93159f" class="block-color-teal">Postman</h1><p id="7ee12252-bb2d-4d8c-804f-675bcb8a730a" class=""><a href="https://documenter.getpostman.com/view/32679813/2sA3QnjaSb">https://documenter.getpostman.com/view/32679813/2sA3QnjaSb</a></p><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="67b35252-31ed-4b7c-a61e-2fdbc80e15e6" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">touch README.md
+
+# README.md
+# Project: Express-Sequelize
+
+## End-point: Home
+### Method: GET
+&gt;```
+&gt;{{BaseUrl}}/
+&gt;```
+### Response: 200
+```json
+{
+    &quot;message&quot;: &quot;Home&quot;
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## End-point: Register
+### Method: POST
+&gt;```
+&gt;{{BaseUrl}}/register
+&gt;```
+### Body (**raw**)
+
+```json
+{
+    &quot;name&quot;: &quot;user3&quot;,
+    &quot;age&quot;: 30,
+    &quot;email&quot;: &quot;user@exampleCom&quot;,
+    &quot;password&quot;: &quot;234567&quot;
+}
+```
+
+### Response: 201
+```json
+{
+    &quot;id&quot;: 3,
+    &quot;name&quot;: &quot;user3&quot;,
+    &quot;age&quot;: 30,
+    &quot;email&quot;: &quot;user3@example.com&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Name is required&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Age is required&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Email is required&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Password is required&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Password at least 6 characters&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Email already exist&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Email format is not correct&quot;
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## End-point: Login
+### Method: POST
+&gt;```
+&gt;{{BaseUrl}}/login
+&gt;```
+### Body (**raw**)
+
+```json
+{
+    &quot;email&quot;:&quot;user1@example.com&quot;,
+    &quot;password&quot;:&quot;123456&quot;
+}
+```
+
+### Response: 200
+```json
+{
+    &quot;access_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE2MzcxMzIyfQ.Uoru0UmmP2DMnxZ7dyr-0ycOrRwxQwSVUCKiX6CCduI&quot;
+}
+```
+
+### Response: 200
+```json
+{
+    &quot;access_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzE2MzcxMzU4fQ.GeISJVZjxmtJTXvhurNh9Mm_tyqC2qzJaQD2w_UQbic&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Email is required&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Password is required&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid email/password&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid email/password&quot;
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## End-point: Add Note
+### Method: POST
+&gt;```
+&gt;{{BaseUrl}}/note
+&gt;```
+### Body (**raw**)
+
+```json
+{
+    &quot;title&quot;:&quot;test_1&quot;,
+    &quot;description&quot;:&quot;test_1&quot;
+}
+```
+
+### 🔑 Authentication bearer
+
+|Param|value|Type|
+|---|---|---|
+|token|{{access_token_2}}|string|
+
+
+### Response: 201
+```json
+{
+    &quot;message&quot;: &quot;Note has been added&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Title is required&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## End-point: Get Note
+### Method: GET
+&gt;```
+&gt;{{BaseUrl}}/note
+&gt;```
+### 🔑 Authentication bearer
+
+|Param|value|Type|
+|---|---|---|
+|token|{{access_token_1}}|string|
+
+
+### Response: 200
+```json
+[
+    {
+        &quot;id&quot;: 1,
+        &quot;title&quot;: &quot;Important Meeting Notes&quot;,
+        &quot;description&quot;: &quot;Meeting with the team on [DATE]. Discussed project progress, deadlines, and next steps. Key takeaways: [list of key points]&quot;,
+        &quot;userId&quot;: 1,
+        &quot;createdAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;,
+        &quot;updatedAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;
+    },
+    {
+        &quot;id&quot;: 2,
+        &quot;title&quot;: &quot;Grocery List&quot;,
+        &quot;description&quot;: &quot;* Milk\n* Bread\n* Eggs\n* Fruits and vegetables&quot;,
+        &quot;userId&quot;: 1,
+        &quot;createdAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;,
+        &quot;updatedAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;
+    },
+    {
+        &quot;id&quot;: 3,
+        &quot;title&quot;: &quot;Project Ideas&quot;,
+        &quot;description&quot;: &quot;Brainstorming new project ideas. Some potential options include: [list of ideas]&quot;,
+        &quot;userId&quot;: 1,
+        &quot;createdAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;,
+        &quot;updatedAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;
+    },
+    {
+        &quot;id&quot;: 7,
+        &quot;title&quot;: &quot;test_1&quot;,
+        &quot;description&quot;: &quot;test_1&quot;,
+        &quot;userId&quot;: 1,
+        &quot;createdAt&quot;: &quot;2024-05-22T09:52:01.629Z&quot;,
+        &quot;updatedAt&quot;: &quot;2024-05-22T09:52:01.629Z&quot;
+    }
+]
+```
+
+### Response: 200
+```json
+[
+    {
+        &quot;id&quot;: 4,
+        &quot;title&quot;: &quot;Weekend Plans&quot;,
+        &quot;description&quot;: &quot;Planning activities for the upcoming weekend. Considering [list of options]&quot;,
+        &quot;userId&quot;: 2,
+        &quot;createdAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;,
+        &quot;updatedAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;
+    },
+    {
+        &quot;id&quot;: 5,
+        &quot;title&quot;: &quot;Movie Recommendations&quot;,
+        &quot;description&quot;: &quot;A list of movies to watch: [list of movie titles]&quot;,
+        &quot;userId&quot;: 2,
+        &quot;createdAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;,
+        &quot;updatedAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;
+    },
+    {
+        &quot;id&quot;: 6,
+        &quot;title&quot;: &quot;Book Wishlist&quot;,
+        &quot;description&quot;: &quot;Books I&#x27;d like to read in the near future: [list of book titles]&quot;,
+        &quot;userId&quot;: 2,
+        &quot;createdAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;,
+        &quot;updatedAt&quot;: &quot;2024-05-22T09:47:59.408Z&quot;
+    }
+]
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## End-point: Edit Description
+### Method: PATCH
+&gt;```
+&gt;{{BaseUrl}}/edit-description/:id
+&gt;```
+### Body (**raw**)
+
+```json
+{
+    &quot;description&quot;:&quot;test3&quot;
+}
+```
+
+### 🔑 Authentication bearer
+
+|Param|value|Type|
+|---|---|---|
+|token|{{access_token_1}}|string|
+
+
+### Response: 200
+```json
+{
+    &quot;message&quot;: &quot;Note has been updated&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+### Response: 403
+```json
+{
+    &quot;message&quot;: &quot;You&#x27;re not authorized&quot;
+}
+```
+
+### Response: 404
+```json
+{
+    &quot;message&quot;: &quot;Note not found&quot;
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## End-point: Edit Note
+### Method: PUT
+&gt;```
+&gt;{{BaseUrl}}/edit-note/:id
+&gt;```
+### Body (**raw**)
+
+```json
+{
+    &quot;description&quot;:&quot;test4&quot;
+}
+```
+
+### 🔑 Authentication bearer
+
+|Param|value|Type|
+|---|---|---|
+|token|{{access_token_1}}|string|
+
+
+### Response: 200
+```json
+{
+    &quot;message&quot;: &quot;Note has been updated&quot;
+}
+```
+
+### Response: 400
+```json
+{
+    &quot;message&quot;: &quot;Title is required&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+### Response: 403
+```json
+{
+    &quot;message&quot;: &quot;You&#x27;re not authorized&quot;
+}
+```
+
+### Response: 404
+```json
+{
+    &quot;message&quot;: &quot;Note not found&quot;
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+
+## End-point: Delete Note
+### Method: DELETE
+&gt;```
+&gt;{{BaseUrl}}/delete-note/:id
+&gt;```
+### Body (**raw**)
+
+```json
+
+```
+
+### 🔑 Authentication bearer
+
+|Param|value|Type|
+|---|---|---|
+|token|{{access_token_1}}|string|
+
+
+### Response: 200
+```json
+{
+    &quot;message&quot;: &quot;Note has been deleted&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+### Response: 401
+```json
+{
+    &quot;message&quot;: &quot;Invalid token&quot;
+}
+```
+
+### Response: 403
+```json
+{
+    &quot;message&quot;: &quot;You&#x27;re not authorized&quot;
+}
+```
+
+### Response: 404
+```json
+{
+    &quot;message&quot;: &quot;Note not found&quot;
+}
+```
+
+
+⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃ ⁃
+_________________________________________________
+Powered By: [postman-to-markdown](https://github.com/bautistaj/postman-to-markdown/)
+</code></pre><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="c019cd8d-0982-4ca4-b752-5d7086ea2613" class="code"><code class="language-Markdown" style="white-space:pre-wrap;word-break:break-all">git add . &amp;&amp; git commit -am &quot;postman done&quot;</code></pre><h1 id="06fb7e1b-6296-4c32-8449-c2020319dcd6" class="block-color-teal">Optional </h1><figure id="78067485-0883-4d44-8855-621557229d18" class="link-to-page"><a href="https://www.notion.so/Testing-100-incompatible-with-development-7806748508834d448855621557229d18?pvs=21">Testing 100 % (incompatible with development)</a></figure><p id="3b9eb97d-ac6d-44a9-9f3e-39d475dc269d" class="">
+</p></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
